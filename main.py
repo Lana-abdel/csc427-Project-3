@@ -5,14 +5,19 @@ import os
 from collections import *
 import math
 
+
 #size of vocabulary
 vocabSize = 0
 #size of vocabulary for each author
 authorTokens = defaultdict(lambda: 0)
+#size of vocabulary for each testfile  author
+authorTestTokens = defaultdict(lambda: 0)
 #62 Unigram Models
 unigramModels = defaultdict(lambda: 0)
 #Unigram model of all words
 vocab = defaultdict(lambda: 0)
+
+ranking = defaultdict(lambda: 0)
 
 # Task 2 - Create train and test files
 def randomFiles():
@@ -46,7 +51,16 @@ def randomFiles():
 
 #Task 3 - Unigram Probabilities
 def unigramTokens (authorsParam):   
-
+    sampleInput = open(sys.argv[1], 'r').readlines()
+    
+    for line in sampleInput: 
+        words= line.split()
+        words = words[4:]
+        for word in words: 
+            #print(word)
+            vocab[word] += 1
+            
+    
     for filename in os.listdir('train'):
         f = os.path.join('train', filename)
     # checking if it is a file
@@ -62,45 +76,63 @@ def unigramTokens (authorsParam):
                 words = words[4:]
                 authorTokens[author] += len(words)
                 for word in words:
-                    vocab[word] += 1
+                    #vocab[word] += 1
                     unigramModels[author][word] += 1
+                    
+                        
 
+    # an unknown word appears in that author's test set but not its train set
+    # consider each author's vocab separately
+    
     vocabSize = len(vocab) #vocabulary size
-    for author in unigramModels:
-        for word in unigramModels[author]:
-            unigramModels[author][word] = (unigramModels[author][word]+1)/ (authorTokens[author] + vocabSize)
+    #print("VocabSize: " + str(vocabSize))
+    for author in unigramModels: 
+        for item in vocab:
+            if (item in unigramModels[author]):
+                unigramModels[author][item] = (unigramModels[author][item]+1)/ (authorTokens[author] + vocabSize)
+            else: 
+                unigramModels[author][item] = 1 / (authorTokens[author] + vocabSize)
 
+
+#Task 4: AllTokens: 
 def AllTokens(): 
     sumNum=0
-    #exp(1/n* sum(log(p(word))) 
-    for author in unigramModels: 
-            
-        #for filename in os.listdir('test'): 
-            #f = os.path.join('test',filename)
-            f = os.path.join('test','testfile.txt')   
-            file = open(f,'r').readlines()
+    testWordCount = 0 
+    geoMean = 0
+    #exp(1/n* sum(log(p(word)))
+    
+    #ranking = defaultdict(lambda: 0)
+
+    #ranking['testfile'] = defaultdict(lambda: 0)
+    for filename in os.listdir('test'): #for every file in test directory 
+        f = os.path.join('test',filename)   #get the path 
+        file = open(f,'r').readlines()  #read each file 
+        testAuthor = filename[:-4] #get the test author name from the file 
+        ranking[testAuthor] = defaultdict(lambda: 0) #create a dictionary 
+        testWordCount = 0 #wordcount 
+        for author in unigramModels:  #for every author in unigramModels 
+            sumNum = 0 
             for line in file: 
-                sentence = line.split()
-                sentence = sentence[4:]
-                print(sentence)
-                ###we are ignoring unknowns by doing it like this, also, we do not care about repeats for this method
-                for trainedword in unigramModels[author].keys(): 
-                    #print("Trainedword1: "+trainedword)
-                    if (trainedword in sentence):   
-                        print("Trainedword2: "+trainedword)
-                        print("Trained Probability: " + str(unigramModels[author][trainedword]))
-                        sumNum += math.log(unigramModels[author][trainedword])
-                        print(sumNum)
-                        print("Author:" + str(author))
-                        print(math.exp(sumNum))
-                #find the trained probability of the test-word 
+                words = line.split()
+                words = words[4:] 
+                #authorTestTokens['testfile'] += len(words)
+                for word in words: 
+                    #1. we need to get the number of tokens per test file
+                    testWordCount += 1 
+                    #print("Trained Probability: " + str(word) + str(unigramModels['trainfile'][word]))
+                    sumNum += math.log(unigramModels[author][word], 2)
+                    #print(sumNum)
+            #find the trained probability of the test-word 
+            geoMean = math.pow(2,(1/testWordCount)*sumNum)
+            #2. we need to store the sums per author per testfile 
+            ranking[testAuthor][author] = geoMean 
 
-        #calculate the number of tokens for a file 
+    print(ranking['8239592']) 
 
-        #calculate the sum of logs of the probabilities for a word in test, if it's unknown ignore it. 
-        
 
-        #raise it to the 2^1/n
+# Task 4 : Singleton: 
+
+
 
 #Main
 
