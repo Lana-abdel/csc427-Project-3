@@ -49,7 +49,7 @@ def randomFiles():
     
 
 #Task 3 - Unigram Probabilities
-def unigramTokens (authorsParam):   
+def unigramTokens():   
     sampleInput = open(sys.argv[1], 'r').readlines()
     
     for line in sampleInput: 
@@ -96,7 +96,7 @@ def unigramTokens (authorsParam):
 #Task 4: AllTokens: 
 def AllTokens(): 
     sumNum=0
-    testWordCount = 0 
+    #testWordCount = 0 
     geoMean = 0
     ranking = defaultdict(lambda: 0)
     
@@ -108,27 +108,46 @@ def AllTokens():
         file = open(f,'r').readlines()  #read each file 
         testAuthor = filename[:-4] #get the test author name from the file 
         ranking[testAuthor] = defaultdict(lambda: 0) #create a dictionary 
-        testWordCount = 0 #wordcount 
         for author in unigramModels:  #for every author in unigramModels 
-            sumNum = 0 
+            sumNum = 0
+            testWordCount = 0 #wordcount 
+            #for every review by the current test author
             for line in file: 
                 words = line.split()
-                words = words[4:] 
+                #get 1 line -> 1 review
+                words = words[4:]
+                testWordCount += len(words)
                 #authorTestTokens['testfile'] += len(words)
                 for word in words: 
                     #1. we need to get the number of tokens per test file
-                    testWordCount += 1 
+                    #testWordCount += 1 
+                    #if testAuthor == 'testfile':
+                        #print("The sumNum for tf is: "+str(sumNum))
+                        #print("testWordCount is: "+str(testWordCount))
+                        #print("The geoMean is: "+str(geoMean))
                     #print("Trained Probability: " + str(word) + str(unigramModels['trainfile'][word]))
                     sumNum += math.log(unigramModels[author][word], 2)
                     #print(sumNum)
+                
             #find the trained probability of the test-word 
+            # if(testAuthor == 'testfile'):
+            #     print(testWordCount)
             geoMean = math.pow(2,(1/testWordCount)*sumNum)
+            
             #2. we need to store the sums per author per testfile 
+            
+            #testAuthor is every author from the test dir. Author is every author from the train, unigramModel
             ranking[testAuthor][author] = geoMean 
 
-    print("33913 : " + str(ranking['33913']))
-    print("70535 : " + str(ranking['70535']))
+    # for 33913. replace tuple with (outer_key,inner_key,value) if you want to see testauthor,author,geoMean
+    scores = [(inner_key,value) for outer_key, inner in ranking.items() for inner_key, value in inner.items() if outer_key.endswith('33913')]
+    scores.sort(key=lambda x: (-x[2], len(x[1])))
+    print(scores)
 
+    #sorted(score, key=lambda x,y: (ranking[x][y]))
+    #print("33913 : " + str(ranking['33913']))
+    #print("70535 : " + str(ranking['70535']))
+    #print(score)
 
 # Task 4 : Singleton: 
 
@@ -166,7 +185,9 @@ def Singleton():
             #2. we need to store the sums per author per testfile 
         ranking['testfile'][author] = geoMean 
     
-    
+    # def sortRankingDict(dict):
+    #     score = []
+    #     sorted(score, key=lambda x: (dict[x][author]))
     
     
     
@@ -183,8 +204,8 @@ def Singleton():
 
 
 
-#randomFiles() 
-unigramTokens(authorTokens)
+#randomFiles()
+unigramTokens()
 #print(unigramModels['testfile']) 
 AllTokens()
 
