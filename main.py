@@ -139,8 +139,7 @@ def AllTokens():
             #testAuthor is every author from the test dir. Author is every author from the train, unigramModel
             ranking[testAuthor][author] = geoMean 
 
-    # for 33913. replace tuple with (outer_key,inner_key,value) if you want to see testauthor,author,geoMean
-    scores = [(inner_key,value) for outer_key, inner in ranking.items() for inner_key, value in inner.items() if outer_key.endswith('33913')]
+    scores = [(outer_key,inner_key,value) for outer_key, inner in ranking.items() for inner_key, value in inner.items() if outer_key.endswith('33913')]
     scores.sort(key=lambda x: (-x[2], len(x[1])))
     print(scores)
 
