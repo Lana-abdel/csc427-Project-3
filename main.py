@@ -23,9 +23,10 @@ vocab = defaultdict(lambda: 0)
 
 # Task 2 - Create train and test files
 def randomFiles():
-    ## RandomFiles() does not take any arguments. It reads from imdb62.txt
-    ## and assigns 90 percent of its lines to training files, and the 
-    ## other 10 percent of test files. 
+    '''
+     RandomFiles() does not take any arguments. It reads from imdb62.txt
+     and assigns 90 percent of its lines to training files, and the 
+     other 10 percent of test files. '''
 
     # contains data from imdb62.txt
     sampleInput = open(sys.argv[1], 'r').readlines()
@@ -58,8 +59,9 @@ def randomFiles():
 
 # Task 3 - Unigram Probabilities
 def unigramTokens():   
-    ## UnigramTokens() takes no parameters. It reads files in the train subdirectory
-    ## and calculates unigram probabilities for each author in the training sets
+    '''
+     UnigramTokens() takes no parameters. It reads files in the train subdirectory
+     and calculates unigram probabilities for each author in the training sets '''
     
     sampleInput = open(sys.argv[1], 'r').readlines()
     
@@ -82,8 +84,7 @@ def unigramTokens():
             unigramModels[author] = defaultdict(lambda: 0)
             
             ## For each review (a.k.a. line), we add the cardinality of the tokens in that review 
-            ## to tokens, and add the count of the individual words to unigramModels on a per
-            ## author basis.
+            ## to tokens, and add the count of the individual words to unigramModels on a per author basis.
             for line in file:
                 words = line.split()
                 words = words[4:]
@@ -93,10 +94,10 @@ def unigramTokens():
     
     # number of unique tokens
     vocabSize = len(vocab)
-    
-    ## For each authors-word combination, assign them a probability model in unigramModels[][].
-    ## Each item represents a distinct word, and never a duplicate token, since it is taking the 
-    ## keys of the vocab dictionary (a hash table).
+    '''
+     For each authors-word combination, assign them a probability model in unigramModels[][].
+     Each item represents a distinct word, and never a duplicate token, since it is taking the 
+     keys of the vocab dictionary (a hash table). '''
     for author in unigramModels: 
         for item in vocab:
             if (item in unigramModels[author]):
@@ -108,9 +109,10 @@ def unigramTokens():
 
 # Task 4 - AllTokens
 def AllTokens(): 
-    ## AllTokens takes no parameters. This is an author attribution system that calculates
-    ## the geometric mean of the unigram probabilities for an author using all the
-    ## tokens in the author test file.
+    '''
+     AllTokens takes no parameters. This is an author attribution system that calculates
+     the geometric mean of the unigram probabilities for an author using all the
+     tokens in the author test file. '''
     
     # Sum of the logs of the unigram probabilities
     sumNum=0
@@ -155,10 +157,11 @@ def AllTokens():
     rankList(attributeScores,'70535')
 
 # Task 4 - Singleton
-def Singleton(): 
-    ## Singleton takes no parameters. This is an author attribution system that calculates
-    ## the geometric mean of the unigram probabilities for an author using all the
-    ## UNIQUE tokens in the author test file.
+def Singleton():  
+    '''
+     Singleton takes no parameters. This is an author attribution system that calculates
+     the geometric mean of the unigram probabilities for an author using all the
+     UNIQUE tokens in the author test file. '''
 
     # to create a nested dictionary for all geometric means
     attributeScores = defaultdict(lambda: 0) 
@@ -170,8 +173,7 @@ def Singleton():
         # get the author name from the test file
         testAuthor = filename[:-4]
 
-        ## nest the dictionary we created prior to this loop
-        ## so that each test file author can be paired with an author of a train file
+        ## nest the dictionary we created prior to this loop so that each test file author can be paired with an author of a train file
         ## and the geometric mean (authorship attribution score) can be stored as the value
         attributeScores[testAuthor] = defaultdict(lambda: 0)
 
@@ -193,8 +195,7 @@ def Singleton():
             # the length of nondistinctTokens (number of indices) will be the number of distinct tokens in the file
             uniqueTokens = len(nondistinctTokens)
 
-            ## start calculating the geometric mean only for distinct tokens
-            ## which are those that occur once in nondistinctTokens
+            # start calculating the geometric mean only for distinct tokens which are those that occur once in nondistinctTokens
             for item in nondistinctTokens:
                 if nondistinctTokens[item] == 1:
                     sumNum += math.log(unigramModels[author][item], 2)  
@@ -215,11 +216,12 @@ def Singleton():
     rankList(attributeScores,'70535')
 
 # Task 5 - Rank the authors from most to least likely (1-62) to have written the passed file
-def rankList(nestedDict,fileNumber):
-    ## rankList takes two arguments, a nested dictionary with an author of a test file as the outer key
-    ## and the author of a train file as the inner key, and the name of the test file without the extension
-    ## It outputs a sorted list of 2-tuples, which correspond to an author in the train set and their
-    ## ranking from 1 to 62 of how likely they were to have written the parameter file (highest to lowest geometric mean)
+def rankList(nestedDict,fileNumber): 
+    '''
+     rankList takes two arguments, a nested dictionary with an author of a test file as the outer key
+     and the author of a train file as the inner key, and the name of the test file without the extension
+     It outputs a sorted list of 2-tuples, which correspond to an author in the train set and their
+     ranking from 1 to 62 of how likely they were to have written the parameter file (highest to lowest geometric mean)'''
     
     # this will store the sorted tuples
     rankinglist = []
@@ -245,9 +247,10 @@ def rankList(nestedDict,fileNumber):
     print(rankinglist)
 
 # main function
-def main():
-    ## The main function takes no parameters, but it decides which authorship attribution system to call
-    ## depending on whether the user enters AllTokens or Singleton at the command line
+def main(): 
+    '''
+     The main function takes no parameters, but it decides which authorship attribution system to call
+     depending on whether the user enters AllTokens or Singleton at the command line '''
 
     system = input("AllTokens or Singleton? ")
     if system == "AllTokens":
