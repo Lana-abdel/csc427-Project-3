@@ -3,8 +3,8 @@
 ## Description 
 This package implements two authorship attribution systems, AllTokens and Singleton, which calculate the most likely authors of test files from a set of training files.
 ### What you will find:  
-- main.py: Our main source code for T2,T3,T4,T5
-    - code description: 
+- main.py: Our source code for T2, T3, T4, and T5
+    - Code description: 
       -  randomFiles(): Satisfies the requirements of T1 by producing the train and test directories. 
       -  The unigramTokens(): Function carries out T3 to calculate the Add-1 unigram probabilities.
       -  AllTokens(): For the test file under consideration, it will compute the geometric mean of the unigram probabilities for a candidate author for all the tokens in the test file. Higher scores indicate stronger system belief in authorship. Satisfies T4.
