@@ -24,7 +24,7 @@ vocab = defaultdict(lambda: 0)
 # Task 2 - Create train and test files
 def randomFiles():
     ## RandomFiles() does not take any arguments. It reads from imdb62.txt
-    ## and assigns 90 percent of their lines to training files, and the 
+    ## and assigns 90 percent of its lines to training files, and the 
     ## other 10 percent of test files. 
 
     # contains data from imdb62.txt
@@ -38,7 +38,7 @@ def randomFiles():
         if (rand not in randomTestNum and len(randomTestNum) < 100):
             randomTestNum.append(rand)
        
-    # a for loop to populate both test and train
+    # a for loop to populate both test and train directories
     for i in range(0,62):
         #find the "i-thousandth" line, i.e. the first review of the next author
         startingLine = i * 1000
