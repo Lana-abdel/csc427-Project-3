@@ -2,7 +2,7 @@
 ## Authors: Lana Abdelmohsen, Robert Helck, Casey Lishko, Alex Quezada
 ## Description 
 This package implements two authorship attribution systems, AllTokens and Singleton, which calculate the most likely authors of test files from a set of training files.
-### What you will find  
+### What you will find:  
 - main.py: Our main source code for T2,T3,T4,T5
     - code description: 
       -  randomFiles(): Satisfies the requirements of T1 by producing the train and test directories. 
@@ -24,7 +24,7 @@ This package implements two authorship attribution systems, AllTokens and Single
 
 
 
-### Instructions for command line 
+### Command line instructions:
 
 Prior to running the program, ensure that you have the correct version of python by typing the command
 
