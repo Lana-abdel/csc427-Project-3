@@ -133,9 +133,9 @@ def AllTokens():
         # The following 3-nested for loop records the geometric mean for each author in unigramModels
         for author in unigramModels:  
             sumNum = 0
-            # word count of test file
+            # Word count of test file, initialized to 0.
             testWordCount = 0
-            # for every word in the test file, calculate log2(P(word)) and keep a running sum
+            # For every word in the test file, calculate log base 2 of (P(word)) and keep a running sum.
             for line in file: 
                 words = line.split()
                 words = words[4:]
@@ -143,13 +143,13 @@ def AllTokens():
                 for word in words: 
                     sumNum += math.log(unigramModels[author][word], 2)
                 
-            # find the trained probability of the test-word 
+            #Complete the calculation of the geometric mean. 
             geoMean = math.pow(2,(1/testWordCount)*sumNum)
 
-            # record authorship attribution score of the test author when compared to the current author
+            #Record authorship attribution score of the test author when compared to the current author in the nested dictionary.
             attributeScores[testAuthor][author] = geoMean
     
-    # output of authorship attribution scores
+    # Print to the command all the attribution scores for which author is most likely to have written 33913.txt.
     print("AllTokens 33913: ")
     rankList(attributeScores,'33913')
     print("AllTokens 70535: ")
@@ -162,45 +162,45 @@ def Singleton():
      the geometric mean of the unigram probabilities for an author using all the
      UNIQUE tokens in the author test file. '''
 
-    # to create a nested dictionary for all geometric means
+    # This line creates a nested dictionary for all geometric means.
     attributeScores = defaultdict(lambda: 0) 
 
     for filename in os.listdir('test'): 
         f = os.path.join('test',filename)
         # read each file 
         file = open(f,'r').readlines()
-        # get the author name from the test file
+        # Get the author name from the test file, and store in testAuthor.
         testAuthor = filename[:-4]
 
-        ## nest the dictionary we created prior to this loop so that each test file author can be paired with an author of a train file
-        ## and the geometric mean (authorship attribution score) can be stored as the value
+        ## Here we nest the dictionary we created prior to this loop so that each test file author can be paired with an author of a train file
+        ## and the geometric mean (authorship attribution score) can be stored as the value.
         attributeScores[testAuthor] = defaultdict(lambda: 0)
 
-        # for every author in the train set
+        # For every author in the train set...
         for author in unigramModels:
 
-            # create a dictionary to store the count of all words that will appear in a file
+            # ...create a dictionary to store the count of all words that will appear in a file,
             nondistinctTokens = defaultdict(lambda: 0)
-            # reset the variable that contains the running total of unigram probabilities
+            # ... and reset the variable that contains the running total of unigram probabilities.
             sumNum = 0
             for line in file:
                 words = line.split()
-                # redeclare the array so that the numerical information that starts each line is omitted
+                # Redeclare the list words[] so that the numerical information that starts each line is omitted.
                 words = words[4:]
                 for word in words:
-                    # add occurrences of word to an index in nondistinctTokens
+                    # Add occurrences of each word to an index in nondistinctTokens.
                     nondistinctTokens[word] += 1
             
-            # the length of nondistinctTokens (number of indices) will be the number of distinct tokens in the file
+            # The length of nondistinctTokens (number of indices) will be the number of distinct tokens in the file.
             uniqueTokens = len(nondistinctTokens)
 
-            # start calculating the geometric mean only for distinct tokens which are those that occur once in nondistinctTokens
+            # Start calculating the geometric mean only for distinct tokens which are those that occur once in nondistinctTokens.
             for item in nondistinctTokens:
                 if nondistinctTokens[item] == 1:
                     sumNum += math.log(unigramModels[author][item], 2)  
 
-            ## calculate and store the geometric mean for the test file and train file author combination
-            ## but catch the division-by-zero error when a test file has no distinct tokens (all duplicate lines)
+            ## Calculate and store the geometric mean for the test file and train file author combination,
+            ## but catch the division-by-zero error when a test file has no distinct tokens (all duplicate lines).
             try:
                 geoMean = math.pow(2,(1/uniqueTokens)*sumNum)
                 attributeScores[testAuthor][author] = geoMean
@@ -208,13 +208,13 @@ def Singleton():
                 print("File " + str(file) + " contains no unique tokens!")
                 sys.exit(1)
 
-    # output of authorship attribution scores
+    # Output of authorship attribution scores
     print("Singleton 33913: ")
     rankList(attributeScores,'33913')
     print("Singleton 70535: ")
     rankList(attributeScores,'70535')
 
-# Task 5 - Rank the authors from most to least likely (1-62) to have written the passed file
+# Task 5 - Rank the authors from most to least likely (1-62) to have written the passed file.
 def rankList(nestedDict,fileNumber): 
     '''
      rankList takes two arguments, a nested dictionary with an author of a test file as the outer key
@@ -222,27 +222,27 @@ def rankList(nestedDict,fileNumber):
      It outputs a sorted list of 2-tuples, which correspond to an author in the train set and their
      ranking from 1 to 62 of how likely they were to have written the parameter file (highest to lowest geometric mean)'''
     
-    # this will store the sorted tuples
+    # This list will store the sorted tuples.
     rankinglist = []
     
-    # produces a 3-tuple of the test file author, train file author, and geometric mean, for the passed test file
+    # This produces a 3-tuple of the test file author, train file author, and geometric mean, for the passed test file.
     geoMeanTuples = [(outer_key,inner_key,value) for outer_key, inner in nestedDict.items() for inner_key,value in inner.items() if outer_key.endswith(fileNumber)]
     
-    # sort the tuples in descending order by their geometric means
+    # Sort the tuples in descending order by their geometric means.
     geoMeanTuples.sort(key=lambda x: (-x[2], len(x[1])))
 
-    # start the ranking at 1
+    # Start the ranking at 1.
     rank=1
 
-    ## for every 3-tuple in geoMeanTuples, append the author of a train file b followed by their rank
-    ## to the list as a 2-tuple
+    ## For every 3-tuple in geoMeanTuples, append the author of a train file b followed by their rank
+    ## to the list as a 2-tuple.
     for a,b,c in geoMeanTuples:
         rankinglist.append(tuple((b,rank)))
 
-        # move onto the next tuple in geoMeanTuples, which will get the next rank
+        # Move onto the next tuple in geoMeanTuples, which will get the next rank.
         rank += 1
     
-    # print the list
+    # Print the list of tuples.
     print(rankinglist)
 
 # main function
