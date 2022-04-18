@@ -5,10 +5,10 @@ The authoriship attribution system
 ### What you will find  
 - main.py: Our main source code for T2,T3,T4,T5
     - code description: 
-      -  randomFiles() satisfies the requirements of T1 by producing the train and test directories
-      -  The unigramTokens() function carries out T3. 
-      -  AllTokens() and Singleton() implement the respective authorship attribution systems in T4. 
-      -  RankList() ranks each author in the train set by likelihood that they wrote the passed test file, a placement from 1 to 62.  
+      -  randomFiles():  satisfies the requirements of T1 by producing the train and test directories
+      -  The unigramTokens(): function carries out T3. 
+      -  AllTokens() and Singleton():  implement the respective authorship attribution systems in T4. 
+      -  RankList(): ranks each author in the train set by likelihood that they wrote the passed test file, a placement from 1 to 62.  
       -  The main function prompts the user for the system whose output they would like to see, AllTokens or Singleton, then calls its associated functions.
 - Two sub-folders: 
   -  Train directory: All the randomly generated train files per author 
