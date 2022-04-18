@@ -23,8 +23,8 @@ vocab = defaultdict(lambda: 0)
 
 # Task 2 - Create train and test files
 def randomFiles():
-    ## RandomFiles() does not take any arguments. It reads from imdb62.txt from the current 
-    ## directory, and assigns 90 percent of their lines to training files, and the 
+    ## RandomFiles() does not take any arguments. It reads from imdb62.txt
+    ## and assigns 90 percent of their lines to training files, and the 
     ## other 10 percent of test files. 
 
     # contains data from imdb62.txt
