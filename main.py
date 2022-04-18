@@ -1,4 +1,4 @@
-# Names: Lana Abdelmohsen, Rob Helck, Casey Lishko, Alex Quezada
+# Names: Lana Abdelmohsen, Robert Helck, Casey Lishko, Alex Quezada
 # Project Title: Authorship Attribution
 # File: main.py
 # Description: This program attributes test files to authors of train files in two ways, first by
@@ -10,15 +10,15 @@ import os
 from collections import *
 import math
 
-# size of vocabulary
+# This variable holds the size of vocabulary.
 vocabSize = 0
-# size of vocabulary for each author
+# This defaultdict holds the number of tokens for each author.
 authorTokens = defaultdict(lambda: 0)
-# size of vocabulary for each testfile  author
+# This is a defaultdict with a key for each author, and a value for the number of tokens associated with each author.
 authorTestTokens = defaultdict(lambda: 0)
-# 62 Unigram Models
+# This is a defaultdict for the 62 Unigram Models, with the models as values and authors as keys.
 unigramModels = defaultdict(lambda: 0)
-# Unigram model of all words
+# This is a default dicts with a key for each word in a vocabulary, and values of the counts thereof.
 vocab = defaultdict(lambda: 0)
 
 # Task 2 - Create train and test files
@@ -28,20 +28,20 @@ def randomFiles():
      and assigns 90 percent of its lines to training files, and the 
      other 10 percent of test files. '''
 
-    # contains data from imdb62.txt
+    # The variabels sampleInput contains data from imdb62.txt.
     sampleInput = open(sys.argv[1], 'r').readlines()
-    # contains review line numbers for test set
+    # The list randomTestNum contains line numbers from imdb62.txt , which are used to create the test set.
     randomTestNum = []
     
-    # populate lists with random numbers
+    # This while loop populates randomTestNum with random numbers which correspond to lines in imdb62.txt.
     while len(randomTestNum) < 100:
         rand = random.randint(1,1000)
         if (rand not in randomTestNum and len(randomTestNum) < 100):
             randomTestNum.append(rand)
        
-    # a for loop to populate both test and train directories
+    # For loop to populate both test and train directories with .txt files corresponding to reviews of each author.
     for i in range(0,62):
-        #find the "i-thousandth" line, i.e. the first review of the next author
+        #Variable startingLine stores the "i-thousandth" line, i.e. the first review of the next author.
         startingLine = i * 1000
         tabSeparated = sampleInput[startingLine].split(" ")[0]
         # find the author name for the file
@@ -65,7 +65,7 @@ def unigramTokens():
     
     sampleInput = open(sys.argv[1], 'r').readlines()
     
-    # Calculate unigram for all words in imdb62.txt
+    # Finds the word count for all words in imdb62.txt.
     for line in sampleInput: 
         words= line.split()
         words = words[4:]
