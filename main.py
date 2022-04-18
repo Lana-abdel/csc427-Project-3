@@ -41,27 +41,27 @@ def randomFiles():
        
     # For loop to populate both test and train directories with .txt files corresponding to reviews of each author.
     for i in range(0,62):
-        #Variable startingLine stores the "i-thousandth" line, i.e. the first review of the next author.
+        #Variable startingLine stores the "i-thousandth" line, i.e. the first review for author i.
         startingLine = i * 1000
         tabSeparated = sampleInput[startingLine].split(" ")[0]
-        # find the author name for the file
+        # This line finds the author name for the file.
         author = tabSeparated.split("\t")[1] 
         test = open(sys.argv[3]+"/"+author+'.txt', 'w')
         train = open(sys.argv[2]+"/"+author+'.txt', 'w')
-        # for all reviews for an author
+        # For all reviews for an author...
         for line in range(startingLine, startingLine+1000):
             if (line%1000) in randomTestNum:
-                # add review to the test folder for the current author
+                # ...add each review to the test folder for the current author.
                 test.write(sampleInput[line])
             else:
-                # add review to the train folder for the current author
+                # add each review to the train folder for the current author.
                 train.write(sampleInput[line])
 
 # Task 3 - Unigram Probabilities
 def unigramTokens():   
     '''
      UnigramTokens() takes no parameters. It reads files in the train subdirectory
-     and calculates unigram probabilities for each author in the training sets '''
+     and calculates unigram probabilities for each author in the training sets. '''
     
     sampleInput = open(sys.argv[1], 'r').readlines()
     
@@ -92,10 +92,10 @@ def unigramTokens():
                 for word in words:
                     unigramModels[author][word] += 1
     
-    # number of unique tokens
+    # Variable vocabSize hold the number of unique tokens.
     vocabSize = len(vocab)
     '''
-     For each authors-word combination, assign them a probability model in unigramModels[][].
+     For each author-word combination, assign a probability model in unigramModels[][].
      Each item represents a distinct word, and never a duplicate token, since it is taking the 
      keys of the vocab dictionary (a hash table). '''
     for author in unigramModels: 
@@ -103,7 +103,7 @@ def unigramTokens():
             if (item in unigramModels[author]):
                 unigramModels[author][item] = (unigramModels[author][item]+1)/ (authorTokens[author] + vocabSize)
             else: 
-                ## This handles cases of a word appearing in the vocabulary but not in the current training author
+                ## This handles cases of a word appearing in the vocabulary but not in the current training author's vocabulary.
                 unigramModels[author][item] = 1 / (authorTokens[author] + vocabSize)
 
 
@@ -114,19 +114,19 @@ def AllTokens():
      the geometric mean of the unigram probabilities for an author using all the
      tokens in the author test file. '''
     
-    # Sum of the logs of the unigram probabilities
+    # Sum of the logs of the unigram probabilities.
     sumNum=0
-    # Mean of all unigram probabilities
+    # Geometric mean of all unigram probabilities.
     geoMean = 0
-    # Dictionary to record authorship attribution scores 
+    # Dictionary to record authorship attribution scores.
     attributeScores= defaultdict(lambda: 0)
     # For every file in test directory... 
     for filename in os.listdir('test'):
-        # save the path to f  
+        # Save the path to f...  
         f = os.path.join('test',filename)   
-        # get file and save to file variable.
+        # ... and read the file and save it to file variable.
         file = open(f,'r').readlines()
-        # get the test author name from the file.
+        # Get the test author name from the file.
         testAuthor = filename[:-4]  
         # create a new dictionary key with the current test author
         attributeScores[testAuthor] = defaultdict(lambda: 0) 
