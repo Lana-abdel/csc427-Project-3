@@ -128,10 +128,9 @@ def AllTokens():
         file = open(f,'r').readlines()
         # Get the test author name from the file.
         testAuthor = filename[:-4]  
-        # create a new dictionary key with the current test author
+        # For the test author's key in the dictionary, assign as a value a new defaultdict.
         attributeScores[testAuthor] = defaultdict(lambda: 0) 
-        # for every author in unigramModels, calculate the author attribution score
-        # for the current test file with all the train files
+        # The following 3-nested for loop records the geometric mean for each author in unigramModels
         for author in unigramModels:  
             sumNum = 0
             # word count of test file
