@@ -214,7 +214,7 @@ def Singleton():
     print("Singleton 70535: ")
     rankList(attributeScores,'70535')
 
-# Task 5 - Rank the authors from most to least likely (1-62) to have written the passed file.
+# Task 5 - Rank the authors from most to least likely by geometric mean to have written the passed file.
 def rankList(nestedDict,fileNumber): 
     '''
      rankList takes two arguments, a nested dictionary with an author of a test file as the outer key
