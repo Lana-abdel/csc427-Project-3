@@ -21,49 +21,14 @@ unigramModels = defaultdict(lambda: 0)
 # This is a default dicts with a key for each word in a vocabulary, and values of the counts thereof.
 vocab = defaultdict(lambda: 0)
 
-# Task 2 - Create train and test files
-def randomFiles():
-    '''
-     RandomFiles() does not take any arguments. It reads from imdb62.txt
-     and assigns 90 percent of its lines to training files, and the 
-     other 10 percent of test files. '''
-
-    # The variabels sampleInput contains data from imdb62.txt.
-    sampleInput = open(sys.argv[1], 'r').readlines()
-    # The list randomTestNum contains line numbers from imdb62.txt , which are used to create the test set.
-    randomTestNum = []
-    
-    # This while loop populates randomTestNum with random numbers which correspond to lines in imdb62.txt.
-    while len(randomTestNum) < 100:
-        rand = random.randint(1,1000)
-        if (rand not in randomTestNum and len(randomTestNum) < 100):
-            randomTestNum.append(rand)
-       
-    # For loop to populate both test and train directories with .txt files corresponding to reviews of each author.
-    for i in range(0,62):
-        #Variable startingLine stores the "i-thousandth" line, i.e. the first review for author i.
-        startingLine = i * 1000
-        tabSeparated = sampleInput[startingLine].split(" ")[0]
-        # This line finds the author name for the file.
-        author = tabSeparated.split("\t")[1] 
-        test = open(sys.argv[3]+"/"+author+'.txt', 'w')
-        train = open(sys.argv[2]+"/"+author+'.txt', 'w')
-        # For all reviews for an author...
-        for line in range(startingLine, startingLine+1000):
-            if (line%1000) in randomTestNum:
-                # ...add each review to the test folder for the current author.
-                test.write(sampleInput[line])
-            else:
-                # add each review to the train folder for the current author.
-                train.write(sampleInput[line])
-
 # Task 3 - Unigram Probabilities
-def unigramTokens():   
+def unigramTokens(train):   
     '''
-     UnigramTokens() takes no parameters. It reads files in the train subdirectory
+     UnigramTokens takes the name of the tran file as a parameter. It reads files in the train subdirectory
      and calculates unigram probabilities for each author in the training sets. '''
     
     sampleInput = open(sys.argv[1], 'r').readlines()
+
     
     # Finds the word count for all words in imdb62.txt.
     for line in sampleInput: 
@@ -73,31 +38,30 @@ def unigramTokens():
             vocab[word] += 1
             
     # Create separate unigrams for all words in each author inside the train directory
-    for filename in os.listdir('train'):
-        f = os.path.join('train', filename)
+    for filename in os.listdir(train):
+        f = os.path.join(train, filename)
         # Checking to see if train/filename is an existing file
-        if os.path.isfile(f):
-            file = open(f,'r').readlines()
-            # the author is the name of the file without .txt
-            author = filename[:-4]
-            # add each author to unigramModels
-            unigramModels[author] = defaultdict(lambda: 0)
-            
-            ## For each review (a.k.a. line), we add the cardinality of the tokens in that review 
-            ## to tokens, and add the count of the individual words to unigramModels on a per author basis.
-            for line in file:
-                words = line.split()
-                words = words[4:]
-                authorTokens[author] += len(words)
-                for word in words:
-                    unigramModels[author][word] += 1
+        file = open(f,'r').readlines()
+        # the author is the name of the file without .txt
+        author = filename[:-4]
+        # add each author to unigramModels
+        unigramModels[author] = defaultdict(lambda: 0)
+        
+        ## For each review (a.k.a. line), we add the number of the tokens in that review to authorTokens,
+        ## and add the count of the individual words to unigramModels on a per author basis.
+        for line in file:
+            words = line.split()
+            words = words[4:]
+            authorTokens[author] += len(words)
+            for word in words:
+                unigramModels[author][word] += 1
     
     # Variable vocabSize hold the number of unique tokens.
     vocabSize = len(vocab)
     '''
-     For each author-word combination, assign a probability model in unigramModels[][].
+     For each author-word combination, assign a probability in unigramModels[][].
      Each item represents a distinct word, and never a duplicate token, since it is taking the 
-     keys of the vocab dictionary (a hash table). '''
+     keys of the vocab dictionary.  '''
     for author in unigramModels: 
         for item in vocab:
             if (item in unigramModels[author]):
@@ -108,29 +72,29 @@ def unigramTokens():
 
 
 # Task 4 - AllTokens
-def AllTokens(): 
+def AllTokens(test): 
     '''
-     AllTokens takes no parameters. This is an author attribution system that calculates
+     AllTokens takes the name of the test folder as a parameter. 
+     This is an author attribution system that calculates
      the geometric mean of the unigram probabilities for an author using all the
      tokens in the author test file. '''
     
     # Sum of the logs of the unigram probabilities.
     sumNum=0
     # Geometric mean of all unigram probabilities.
-    geoMean = 0
+    geoMean = 0 
     # Dictionary to record authorship attribution scores.
     attributeScores= defaultdict(lambda: 0)
-    # For every file in test directory... 
-    for filename in os.listdir('test'):
-        # Save the path to f...  
-        f = os.path.join('test',filename)   
-        # ... and read the file and save it to file variable.
+    # For every file in the test directory 
+    for filename in os.listdir(test):
+        f = os.path.join(test,filename)   
+        # read the file and save it to file variable.
         file = open(f,'r').readlines()
         # Get the test author name from the file.
         testAuthor = filename[:-4]  
-        # For the test author's key in the dictionary, assign as a value a new defaultdict.
+        # For the test author's key in the dictionary, assign as a value a new dictionary
         attributeScores[testAuthor] = defaultdict(lambda: 0) 
-        # The following 3-nested for loop records the geometric mean for each author in unigramModels
+        # The following for loops record the geometric mean for each author in unigramModels
         for author in unigramModels:  
             sumNum = 0
             # Word count of test file, initialized to 0.
@@ -154,19 +118,20 @@ def AllTokens():
     rankList(attributeScores,'33913')
     print("AllTokens 70535: ")
     rankList(attributeScores,'70535')
-
 # Task 4 - Singleton
-def Singleton():  
+def Singleton(test):  
     '''
-     Singleton takes no parameters. This is an author attribution system that calculates
+     Singleton takes the name of the text directory as a parameter. 
+     This is an author attribution system that calculates
      the geometric mean of the unigram probabilities for an author using all the
      UNIQUE tokens in the author test file. '''
 
     # This line creates a nested dictionary for all geometric means.
     attributeScores = defaultdict(lambda: 0) 
+    #test = str(sys.argv[3]) 
 
-    for filename in os.listdir('test'): 
-        f = os.path.join('test',filename)
+    for filename in os.listdir(test): 
+        f = os.path.join(test,filename)
         # read each file 
         file = open(f,'r').readlines()
         # Get the author name from the test file, and store in testAuthor.
@@ -176,12 +141,12 @@ def Singleton():
         # The geometric mean (authorship attribution score) can then be stored as the value.
         attributeScores[testAuthor] = defaultdict(lambda: 0)
 
-        # For every author in the train set...
+        # For every author in the train set
         for author in unigramModels:
 
-            # ...create a dictionary to store the count of all words that will appear in a file,
+            # create a dictionary to store the count of all words that will appear in a file,
             nondistinctTokens = defaultdict(lambda: 0)
-            # ... and reset the variable that contains the running total of unigram probabilities.
+            # and reset the variable that contains the running total of unigram probabilities.
             sumNum = 0
             for line in file:
                 words = line.split()
@@ -207,20 +172,19 @@ def Singleton():
             except ZeroDivisionError:
                 print("File " + str(file) + " contains no unique tokens!")
                 sys.exit(1)
-
     # Output of authorship attribution scores
     print("Singleton 33913: ")
     rankList(attributeScores,'33913')
     print("Singleton 70535: ")
     rankList(attributeScores,'70535')
 
-# Task 5 - Rank the authors from most to least likely by geometric mean to have written the passed file.
+# Task 5 - Rank the authors from most to least likely to have written the passed file using the geometric mean. 
 def rankList(nestedDict,fileNumber): 
     '''
      rankList takes two arguments, a nested dictionary with an author of a test file as the outer key
-     and the author of a train file as the inner key, and the name of the test file without the extension
+     and the author of a train file as the inner key, and the name of the test file without the extension.
      It outputs a sorted list of 2-tuples, which correspond to an author in the train set and their
-     ranking from 1 to 62 of how likely they were to have written the parameter file (highest to lowest geometric mean)'''
+     ranking of how likely they were to have written the parameter file (highest to lowest geometric mean).'''
     
     # This list will store the sorted tuples.
     rankinglist = []
@@ -242,19 +206,24 @@ def rankList(nestedDict,fileNumber):
 def main(): 
     '''
      The main function takes no parameters, but it decides which authorship attribution system to call
-     depending on whether the user enters AllTokens or Singleton at the command line '''
-
-    system = input("AllTokens or Singleton? ")
-    if system == "AllTokens":
-        randomFiles()
-        unigramTokens()
-        AllTokens()
-    elif system == "Singleton":
-        randomFiles()
-        unigramTokens()
-        Singleton()
-    else:
-        print("Enter a valid system (AllTokens or Singleton).")
+     depending on whether the user enters AllTokens or Singleton at the command line. '''
+    while(True):
+        system = input("AllTokens or Singleton? (type q to exit). ") 
+        train = str(sys.argv[2])
+        test = str(sys.argv[3]) 
+        if os.path.isdir(train) and os.path.isdir(test):
+            if system == "AllTokens":
+                unigramTokens(train)
+                AllTokens(test)
+            elif system == "Singleton":
+                unigramTokens(train)
+                Singleton(test) 
+            elif system == "q": 
+                break
+            else:
+                print("Enter a valid system (AllTokens or Singleton).") 
+        else: 
+            print("\n One or both directories does not exist, try again. \n")
 
 if __name__ == "__main__":
     main()
