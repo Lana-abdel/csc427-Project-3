@@ -143,10 +143,10 @@ def AllTokens():
                 for word in words: 
                     sumNum += math.log(unigramModels[author][word], 2)
                 
-            #Complete the calculation of the geometric mean. 
+            # Complete the calculation of the geometric mean. 
             geoMean = math.pow(2,(1/testWordCount)*sumNum)
 
-            #Record authorship attribution score of the test author when compared to the current author in the nested dictionary.
+            # Record authorship attribution score of the test author when compared to the current author in the nested dictionary.
             attributeScores[testAuthor][author] = geoMean
     
     # Print to the command all the attribution scores for which author is most likely to have written 33913.txt.
@@ -172,8 +172,8 @@ def Singleton():
         # Get the author name from the test file, and store in testAuthor.
         testAuthor = filename[:-4]
 
-        ## Here we nest the dictionary we created prior to this loop so that each test file author can be paired with an author of a train file
-        ## and the geometric mean (authorship attribution score) can be stored as the value.
+        # Here we nest the dictionary we created prior to this loop so that each test file author can be paired with an author of a train file
+        # The geometric mean (authorship attribution score) can then be stored as the value.
         attributeScores[testAuthor] = defaultdict(lambda: 0)
 
         # For every author in the train set...
@@ -226,21 +226,14 @@ def rankList(nestedDict,fileNumber):
     rankinglist = []
     
     # This produces a 3-tuple of the test file author, train file author, and geometric mean, for the passed test file.
-    geoMeanTuples = [(outer_key,inner_key,value) for outer_key, inner in nestedDict.items() for inner_key,value in inner.items() if outer_key.endswith(fileNumber)]
+    geoMeanTuples = [(outer_key,inner_key,value) for outer_key,inner in nestedDict.items() for inner_key,value in inner.items() if outer_key.endswith(fileNumber)]
     
     # Sort the tuples in descending order by their geometric means.
     geoMeanTuples.sort(key=lambda x: (-x[2], len(x[1])))
 
-    # Start the ranking at 1.
-    rank=1
-
-    ## For every 3-tuple in geoMeanTuples, append the author of a train file b followed by their rank
-    ## to the list as a 2-tuple.
+    # For every 3-tuple in geoMeanTuples, append the author of a train file b followed by geometric mean c to a 2-tuple
     for a,b,c in geoMeanTuples:
-        rankinglist.append(tuple((b,rank)))
-
-        # Move onto the next tuple in geoMeanTuples, which will get the next rank.
-        rank += 1
+        rankinglist.append(tuple((b,c)))
     
     # Print the list of tuples.
     print(rankinglist)
