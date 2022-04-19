@@ -4,7 +4,6 @@
 # Description: This program attributes test files to authors of train files in two ways, first by
 # considering all tokens in the test file and then only distinct tokens.
 
-import random 
 import sys 
 import os
 from collections import *
@@ -14,8 +13,6 @@ import math
 vocabSize = 0
 # This defaultdict holds the number of tokens for each author.
 authorTokens = defaultdict(lambda: 0)
-# This is a defaultdict with a key for each author, and a value for the number of tokens associated with each author.
-authorTestTokens = defaultdict(lambda: 0)
 # This is a defaultdict for the 62 Unigram Models, with the models as values and authors as keys.
 unigramModels = defaultdict(lambda: 0)
 # This is a default dicts with a key for each word in a vocabulary, and values of the counts thereof.
@@ -70,7 +67,6 @@ def unigramTokens(train):
                 ## This handles cases of a word appearing in the vocabulary but not in the current training author's vocabulary.
                 unigramModels[author][item] = 1 / (authorTokens[author] + vocabSize)
 
-
 # Task 4 - AllTokens
 def AllTokens(test): 
     '''
@@ -118,6 +114,7 @@ def AllTokens(test):
     rankList(attributeScores,'33913')
     print("AllTokens 70535: ")
     rankList(attributeScores,'70535')
+
 # Task 4 - Singleton
 def Singleton(test):  
     '''
@@ -195,9 +192,9 @@ def rankList(nestedDict,fileNumber):
     # Sort the tuples in descending order by their geometric means.
     geoMeanTuples.sort(key=lambda x: (-x[2], len(x[1])))
 
-    # For every 3-tuple in geoMeanTuples, append the author of a train file b followed by geometric mean c to a 2-tuple
-    for a,b,c in geoMeanTuples:
-        rankinglist.append(tuple((b,c)))
+    # Append a 2-tuple of the train file author and geometric mean to the ranked list.
+    for testAuthor,trainAuthor,geoMean in geoMeanTuples:
+        rankinglist.append(tuple((trainAuthor,geoMean)))
     
     # Print the list of tuples.
     print(rankinglist)
