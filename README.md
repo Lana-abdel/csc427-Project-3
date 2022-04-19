@@ -9,7 +9,7 @@ This package implements two authorship attribution systems, AllTokens and Single
       -  The unigramTokens(): Function carries out T3 to calculate the Add-1 unigram probabilities.
       -  AllTokens(): For the test file under consideration, it will compute the geometric mean of the unigram probabilities for a candidate author for all the tokens in the test file. Higher scores indicate stronger system belief in authorship. Satisfies T4.
       -  Singleton(): Compute the geometric mean of the unigram probabilities for a candidate author for only the distinct tokens that occur exactly one and only one single time in the test file. Satisfies T4.
-      -  rankList(): Ranks each author in the train set by likelihood that they wrote the passed test file, a placement from 1 to 62.  
+      -  rankList(): Ranks each author in the train set by likelihood that they wrote the passed test file, from highest to lowest geometric mean.  
       -  main(): Function prompts the user for the system whose output they would like to see, AllTokens or Singleton, then calls its associated functions.
  
 - Two sub-folders: 
