@@ -13,18 +13,21 @@ import math
 vocabSize = 0
 # This defaultdict holds the number of tokens for each author.
 authorTokens = defaultdict(lambda: 0)
+# This is a defaultdict with a key for each author, and a value for the number of tokens associated with each author.
+authorTestTokens = defaultdict(lambda: 0)
 # This is a defaultdict for the 62 Unigram Models, with the models as values and authors as keys.
 unigramModels = defaultdict(lambda: 0)
 # This is a default dicts with a key for each word in a vocabulary, and values of the counts thereof.
 vocab = defaultdict(lambda: 0)
 
 # Task 3 - Unigram Probabilities
-def unigramTokens(train):   
+def unigramTokens(file,train):   
     '''
-     UnigramTokens takes the name of the tran file as a parameter. It reads files in the train subdirectory
+     UnigramTokens takes the imbd62.txt file and the name of the train file as parameters. It reads files in the train subdirectory
      and calculates unigram probabilities for each author in the training sets. '''
     
-    sampleInput = open(sys.argv[1], 'r').readlines()
+
+    sampleInput = open(file, 'r').readlines()
 
     
     # Finds the word count for all words in imdb62.txt.
@@ -66,6 +69,7 @@ def unigramTokens(train):
             else: 
                 ## This handles cases of a word appearing in the vocabulary but not in the current training author's vocabulary.
                 unigramModels[author][item] = 1 / (authorTokens[author] + vocabSize)
+
 
 # Task 4 - AllTokens
 def AllTokens(test): 
@@ -114,7 +118,6 @@ def AllTokens(test):
     rankList(attributeScores,'33913')
     print("AllTokens 70535: ")
     rankList(attributeScores,'70535')
-
 # Task 4 - Singleton
 def Singleton(test):  
     '''
@@ -192,9 +195,9 @@ def rankList(nestedDict,fileNumber):
     # Sort the tuples in descending order by their geometric means.
     geoMeanTuples.sort(key=lambda x: (-x[2], len(x[1])))
 
-    # Append a 2-tuple of the train file author and geometric mean to the ranked list.
-    for testAuthor,trainAuthor,geoMean in geoMeanTuples:
-        rankinglist.append(tuple((trainAuthor,geoMean)))
+    # For every 3-tuple in geoMeanTuples, append the author of a train file b followed by geometric mean c to a 2-tuple
+    for a,b,c in geoMeanTuples:
+        rankinglist.append(tuple((b,c)))
     
     # Print the list of tuples.
     print(rankinglist)
@@ -203,17 +206,18 @@ def rankList(nestedDict,fileNumber):
 def main(): 
     '''
      The main function takes no parameters, but it decides which authorship attribution system to call
-     depending on whether the user enters AllTokens or Singleton at the command line. '''
+     depending on whether the user enters AllTokens or Singleton at the command line. ''' 
+    imdb62 = str(sys.argv[1])
+    train = str(sys.argv[2])
+    test = str(sys.argv[3]) 
     while(True):
         system = input("AllTokens or Singleton? (type q to exit). ") 
-        train = str(sys.argv[2])
-        test = str(sys.argv[3]) 
         if os.path.isdir(train) and os.path.isdir(test):
             if system == "AllTokens":
-                unigramTokens(train)
+                unigramTokens(imdb62, train)
                 AllTokens(test)
             elif system == "Singleton":
-                unigramTokens(train)
+                unigramTokens(imdb62, train)
                 Singleton(test) 
             elif system == "q": 
                 break
@@ -221,6 +225,7 @@ def main():
                 print("Enter a valid system (AllTokens or Singleton).") 
         else: 
             print("\n One or both directories does not exist, try again. \n")
+            break
 
 if __name__ == "__main__":
     main()
