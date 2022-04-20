@@ -5,7 +5,7 @@ This package implements two authorship attribution systems, AllTokens and Single
 ### What you will find:  
 - main.py: Our source code for T3, T4, and T5
     - Code description: 
-      -  unigramTokens(...): Takes two parameters, the imbd62.txt file and the name of the train file. It calculates the Add-1 unigram probabilities. Satisfies T3. 
+      -  unigramTokens(...): Takes two parameters, the imdb62.txt file and the name of the training file. It calculates the Add-1 unigram probabilities. Satisfies T3.
       -  AllTokens(...): Takes the name of the test folder as a parameter. For the test file under consideration, it will compute the geometric mean of the unigram probabilities for a candidate author for all the tokens in the test file. Higher scores indicate stronger system belief in authorship. Satisfies T4.
       -  Singleton(...): Takes the name of the test directory as a parameter. Computes the geometric mean of the unigram probabilities for a candidate author for only the distinct tokens that occur exactly one and only one single time in the test file. Satisfies T4.
       -  rankList(...):  Takes two arguments, a nested dictionary with an author of a test file as the outer key and the author of a train file as the inner key. Ranks each author in the training set by likelihood that they wrote the passed test file, from highest to lowest geometric mean.  
