@@ -160,7 +160,7 @@ def Singleton(test):
                     sumNum += math.log(unigramModels[author][item], 2)  
 
             ## Calculate and store the geometric mean for the test file and train file author combination,
-            ## but catch the division-by-zero error when a test file has no distinct tokens (all duplicate lines).
+            ## but catch the division-by-zero error when a test file has no distinct tokens.
             try:
                 geoMean = math.pow(2,(1/uniqueTokens)*sumNum)
                 attributeScores[testAuthor][author] = geoMean
