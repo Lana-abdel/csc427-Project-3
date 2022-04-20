@@ -21,7 +21,7 @@ vocab = defaultdict(lambda: 0)
 # Task 3 - Unigram Probabilities
 def unigramTokens(file,train):   
     '''
-     UnigramTokens takes the imbd62.txt file and the name of the train file as parameters. It reads files in the train subdirectory
+     UnigramTokens takes the imdb62.txt file and the name of the train file as parameters. It reads files in the train subdirectory
      and calculates unigram probabilities for each author in the training sets. '''
     
     sampleInput = open(file, 'r').readlines()
