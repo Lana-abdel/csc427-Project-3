@@ -11,7 +11,7 @@ This package implements two authorship attribution systems, AllTokens and Single
       -  rankList():  Takes two arguments, a nested dictionary with an author of a test file as the outer key and the author of a train file as the inner key. Ranks each author in the train set by likelihood that they wrote the passed test file, from highest to lowest geometric mean.  
       -  main(): Function prompts the user for the system whose output they would like to see, AllTokens or Singleton, then calls its associated functions.
 - generateFiles.py: Our source code for T2
-     -   randomFiles(file): Takes in the imdb62.txt file as a parameter. Satisfies the requirements of T2 by producing the randomized files in the train and test directories. 
+     -   randomFiles(): Takes in the imdb62.txt file as a parameter. Satisfies the requirements of T2 by producing the randomized files in the train and test directories. 
  
 - Two sub-folders: 
   -  Train directory: All the randomly generated train files per author 
