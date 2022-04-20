@@ -1,7 +1,7 @@
 # Names: Lana Abdelmohsen, Robert Helck, Casey Lishko, Alex Quezada
 # Project Title: Authorship Attribution
 # File: random.py
-# Description: This program splits up imdb62.txt into train and test files. 
+# Description: This program populates the train and test directories with 62 files one for each author
 
 import random 
 import sys 
