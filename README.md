@@ -39,7 +39,7 @@ To run the program generateFiles.py, type
 
     python generateFiles.py /path/to/imdb62.txt /path/to/train /path/to/test  
     
-output for generateFiles.py: 
+- output for generateFiles.py: 
     - This will populate the train and test directories specified with 62 files one for each author. 
     - The output displayed would be a confirmation stating that "The files have been generated"
     
