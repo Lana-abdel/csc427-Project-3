@@ -11,12 +11,12 @@ import math
 # Task 2 - Create train and test files
 def randomFiles(file):
     '''
-     RandomFiles() takes in the imdb62.txt file as a parameter. It reads from imdb62.txt
+     RandomFiles() takes in the imdb62.txt file as a parameter.  It reads from imdb62.txt
      and assigns 90 percent of its lines to training files, and the 
      other 10 percent of test files. '''
 
     # The variabels sampleInput contains data from imdb62.txt.
-    sampleInput = open(sys.argv[1], 'r').readlines()
+    sampleInput = open(file, 'r').readlines()
     # The list randomTestNum contains line numbers from imdb62.txt , which are used to create the test set.
     randomTestNum = []
     
@@ -45,6 +45,4 @@ def randomFiles(file):
                 train.write(sampleInput[line])
 imdb62 = str(sys.argv[1])
 randomFiles(imdb62)
-print("\n The files have been generated\n"))
-randomFiles()
 print("\n The files have been generated\n")
