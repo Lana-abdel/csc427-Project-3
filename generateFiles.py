@@ -5,9 +5,8 @@
 
 import random 
 import sys 
-import os
 from collections import *
-import math
+
 # Task 2 - Create train and test files
 def randomFiles(file):
     '''

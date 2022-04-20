@@ -13,8 +13,6 @@ import math
 vocabSize = 0
 # This defaultdict holds the number of tokens for each author.
 authorTokens = defaultdict(lambda: 0)
-# This is a defaultdict with a key for each author, and a value for the number of tokens associated with each author.
-authorTestTokens = defaultdict(lambda: 0)
 # This is a defaultdict for the 62 Unigram Models, with the models as values and authors as keys.
 unigramModels = defaultdict(lambda: 0)
 # This is a default dicts with a key for each word in a vocabulary, and values of the counts thereof.
@@ -26,10 +24,8 @@ def unigramTokens(file,train):
      UnigramTokens takes the imbd62.txt file and the name of the train file as parameters. It reads files in the train subdirectory
      and calculates unigram probabilities for each author in the training sets. '''
     
-
     sampleInput = open(file, 'r').readlines()
 
-    
     # Finds the word count for all words in imdb62.txt.
     for line in sampleInput: 
         words= line.split()
@@ -69,7 +65,6 @@ def unigramTokens(file,train):
             else: 
                 ## This handles cases of a word appearing in the vocabulary but not in the current training author's vocabulary.
                 unigramModels[author][item] = 1 / (authorTokens[author] + vocabSize)
-
 
 # Task 4 - AllTokens
 def AllTokens(test): 
@@ -118,6 +113,7 @@ def AllTokens(test):
     rankList(attributeScores,'33913')
     print("AllTokens 70535: ")
     rankList(attributeScores,'70535')
+
 # Task 4 - Singleton
 def Singleton(test):  
     '''
@@ -127,8 +123,7 @@ def Singleton(test):
      UNIQUE tokens in the author test file. '''
 
     # This line creates a nested dictionary for all geometric means.
-    attributeScores = defaultdict(lambda: 0) 
-    #test = str(sys.argv[3]) 
+    attributeScores = defaultdict(lambda: 0)
 
     for filename in os.listdir(test): 
         f = os.path.join(test,filename)
@@ -195,9 +190,9 @@ def rankList(nestedDict,fileNumber):
     # Sort the tuples in descending order by their geometric means.
     geoMeanTuples.sort(key=lambda x: (-x[2], len(x[1])))
 
-    # For every 3-tuple in geoMeanTuples, append the author of a train file b followed by geometric mean c to a 2-tuple
-    for a,b,c in geoMeanTuples:
-        rankinglist.append(tuple((b,c)))
+    # Append a 2-tuple of the train file author and geometric mean to the ranked list
+    for testAuthor,trainAuthor,geoMean in geoMeanTuples:
+        rankinglist.append(tuple((trainAuthor,geoMean)))
     
     # Print the list of tuples.
     print(rankinglist)
