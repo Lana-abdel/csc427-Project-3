@@ -22,7 +22,7 @@ def randomFiles(file):
     # This while loop populates randomTestNum with random numbers which correspond to lines in imdb62.txt.
     while len(randomTestNum) < 100:
         rand = random.randint(1,1000)
-        if (rand not in randomTestNum and len(randomTestNum) <= 100):
+        if (rand not in randomTestNum and len(randomTestNum) < 100):
             randomTestNum.append(rand)
        
     # For loop to populate both test and train directories with .txt files corresponding to reviews of each author.
