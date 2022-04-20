@@ -48,10 +48,10 @@ To run the main.py program, type
     python main.py /path/to/imdb62.txt /path/to/train /path/to/test  
     
 - output for main.py:  
-    - The user will see the prompt "AllTokens or Singleton? (type q to quit)" and enter which of the two authorship attribution systems they would like to observe. 
-        -  If they type AllTokens, the program will take a few minutes to run and output two lists: 
+    - The user will see the prompt "AllTokens or Singleton? (type q to quit)" and enter which of the two authorship attribution systems they would like to observe (both systems may take between 1-2 minutes to run). 
+        -  If they type AllTokens, the output will be two lists: 
              - The system's rankings for each author's likelihood of writing the test file "33913.txt," 
              - The system's rankings for each author's likelihood of writing the test file "70535.txt,"
              - The calculation is based on the geometric means over all tokens in the test file. 
-             - Typing Singleton at the prompt will output the other system's determinations for these test files, only considering distinct tokens in the geometric mean calculations.
+         - Typing Singleton at the prompt will output the other system's determinations for these test files, only considering distinct tokens in the geometric mean calculations.
              -  Every list is labeled accordingly with the system that produced it and the test file it attributed.
