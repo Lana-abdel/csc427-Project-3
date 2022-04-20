@@ -11,7 +11,7 @@ import math
 # Task 2 - Create train and test files
 def randomFiles(file):
     '''
-     RandomFiles() does not take any arguments. It reads from imdb62.txt
+     RandomFiles() takes in the imdb62.txt file as a parameter. It reads from imdb62.txt
      and assigns 90 percent of its lines to training files, and the 
      other 10 percent of test files. '''
 
