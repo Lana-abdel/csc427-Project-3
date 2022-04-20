@@ -9,7 +9,7 @@ import os
 from collections import *
 import math
 # Task 2 - Create train and test files
-def randomFiles():
+def randomFiles(file):
     '''
      RandomFiles() does not take any arguments. It reads from imdb62.txt
      and assigns 90 percent of its lines to training files, and the 
@@ -43,5 +43,8 @@ def randomFiles():
             else:
                 # add each review to the train folder for the current author.
                 train.write(sampleInput[line])
+imdb62 = str(sys.argv[1])
+randomFiles(imdb62)
+print("\n The files have been generated\n"))
 randomFiles()
 print("\n The files have been generated\n")
