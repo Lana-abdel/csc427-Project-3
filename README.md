@@ -6,23 +6,22 @@ This package implements two authorship attribution systems, AllTokens and Single
 - main.py: Our source code for T3, T4, and T5
     - Code description: 
       -  unigramTokens(...): Takes two parameters, the imdb62.txt file and the name of the training file. It calculates the Add-1 unigram probabilities. Satisfies T3.
-      -  AllTokens(...): Takes the name of the test folder as a parameter. For the test file under consideration, it will compute the geometric mean of the unigram probabilities for a candidate author for all the tokens in the test file. Higher scores indicate stronger system belief in authorship. Satisfies T4.
+      -  AllTokens(...): Takes the name of the test folder as a parameter. For the test file under consideration, it will compute the geometric mean of the unigram probabilities for a candidate author for all the tokens in the test file. Higher scores indicate a stronger system belief in authorship. Satisfies T4.
       -  Singleton(...): Takes the name of the test directory as a parameter. Computes the geometric mean of the unigram probabilities for a candidate author for only the distinct tokens that occur exactly one and only one single time in the test file. Satisfies T4.
-      -  rankList(...):  Takes two arguments, a nested dictionary with an author of a test file as the outer key and the author of a train file as the inner key. Ranks each author in the training set by likelihood that they wrote the passed test file, from highest to lowest geometric mean.  
+      -  rankList(...): Takes two arguments, a nested dictionary with an author of a test file as the outer key and the author of a train file as the inner key. Ranks each author in the training set by the likelihood that they wrote the passed test file, from highest to lowest geometric mean.  
       -  main(): Prompts the user for the system whose output they would like to see, AllTokens or Singleton, then calls its associated functions.
 - generateFiles.py: Our source code for T2
-     -   randomFiles(...): Takes in the imdb62.txt file as a parameter. Satisfies the requirements of T2 by producing the randomized files in the train and test directories. 
+     -   randomFiles(...): Takes the imdb62.txt file as a parameter. Satisfies the requirements of T2 by producing the randomized files in the train and test directories. 
  
 - Two sub-folders: 
-  -  Train directory: All the randomly generated train files per author 
-  -  Test Directory: All the randomly generated test files per author  
+  -  Train directory: All the randomly generated train files per author. 
+  -  Test Directory: All the randomly generated test files per author.  
  
-- imdb62.txt: 62,000-line file for all authors and their reviews
+- imdb62.txt: 62,000-line file for all authors and their reviews.
 
-- D3.pdf: The written report of our authorship attribution system comparisons (satisfies T5) 
+- D3.pdf: The written report of our authorship attribution system comparisons (satisfies T5). 
         
-- D4.pdf: Contains our reflections about this project
-
+- D4.pdf: Contains our reflections about this project. 
 
 
 ### Command line instructions:
@@ -49,9 +48,9 @@ To run the main.py program, type
     
 - Output for main.py:  
     - The user will see the prompt "AllTokens or Singleton? (type q to quit)" and enter which of the two authorship attribution systems they would like to observe (both systems may take between 1-2 minutes to run). 
-        -  If they type AllTokens, the output will be two lists: 
-             - The system's rankings for each author's likelihood of writing the test file "33913.txt"
-             - The system's rankings for each author's likelihood of writing the test file "70535.txt"
+        -  If the user types AllTokens, the output will be two lists: 
+             - The system's rankings for each author's likelihood of writing the test file "33913.txt".
+             - The system's rankings for each author's likelihood of writing the test file "70535.txt".
              - The calculation is based on the geometric means over all tokens in the test file. 
          - Typing Singleton at the prompt will output the other system's determinations for these test files, only considering distinct tokens in the geometric mean calculations.
              -  Every list is labeled accordingly with the system that produced it and the test file it attributed.
